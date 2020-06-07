@@ -1,0 +1,58 @@
+.Dd $Mdocdate$
+.Dt TREE 1
+.Os
+.Sh NAME
+.Nm tree
+.Nd tree listing of filesystem paths.
+.Sh SYNOPSIS
+.Nm tree
+.Op Fl Aiplogsamc 
+.Op Ar path Cm ...
+.Sh DESCRIPTION
+The
+.Nm
+prints a listing of files as a tree, using box drawing characters
+from the UTF set, or the ASCII characters
+.Cm '-' ,
+.Cm '+' ,
+.Cm '`'
+and
+.Cm '|' .
+The program also can include the fields of a long listing
+directory (as option
+.Cm Fl l
+of
+.Cm ls
+command does)
+The field are printed depending on the options used, but they are
+ordered in the same positions they appear int the long
+.Cm ls
+listing.
+This is
+.Bl -tag
+.It inode
+The inode number is printed using a 9 character field (to
+maintain the alignment so the tree doesn't get garbled)
+.It permissions
+The permissions, as they appear in the
+.Cm ls
+command.
+.It links
+The number of hard links pointing to the file/directory inode.
+.It user
+The user name is printed (actually unimplemented, what is printed
+is the user id number)
+.It group
+The group name (actually unimplemented, the gid of the file if
+printed)
+.It size
+The size of the file in bytes.
+.It last modification timestamp
+The time of the last modification.
+.It last access timestmp
+The time of last access.
+.It last inode change
+The time of the last inode change.
+.It the file name
+This is always printed.
+.El
