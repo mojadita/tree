@@ -47,9 +47,41 @@ static int desc(const void *a, const void *b)
     return strcmp(*B, *A);
 }
 
+static char **path;
+static size_t path_n;
+static size_t path_cap;
+
+static char *print_path(char *buf, size_t sz)
+{
+	char *sep = "", *saved_buf = buf;
+	size_t n;
+	for (int i = 0; i < path_n; i++) {
+		n = snprintf(buf, sz, "%s%s", sep, path[i]);
+		sep = "/";
+		if (n > 0) {
+			buf += n;
+			sz -= n;
+		}
+	}
+	return saved_buf;
+} /* print_path */
+
 void
 process(char *name, char *pfx1, char *pfx2)
 {
+	char work_buffer[8192];
+
+	if (path == NULL) {
+		path_cap = 16;
+		path = calloc(path_cap, sizeof *path);
+		path_n = 0;
+	}
+	if (path_n == path_cap) {
+		path_cap <<= 1;
+		path = realloc(path, path_cap * sizeof *path);
+	}
+	path[path_n++] = name;
+
     /* stat the file, if fd == -1, then we are at a root
      * node, and we don't have a directory file descriptor
      * yet, just use normal stat for it.  Otherwise, use
@@ -59,8 +91,9 @@ process(char *name, char *pfx1, char *pfx2)
     int res = stat(name, &stbuf);
     if (res < 0) {
         WARN("cannot stat %s: ERROR %d: %s\n",
-            name, errno, strerror(errno));
-        return;
+            print_path(work_buffer, sizeof work_buffer),
+			errno, strerror(errno));
+        goto end;
     }
 
     /* print the stat info */
@@ -83,12 +116,14 @@ process(char *name, char *pfx1, char *pfx2)
         DIR *d = opendir(name);
         if (!d) {
             WARN("cannot read directory %s: ERROR %d: %s\n",
-                name, errno, strerror(errno));
-            return;
+                print_path(work_buffer, sizeof work_buffer),
+				errno, strerror(errno));
+            goto end;
         }
         if (chdir(name) < 0) {
             WARN("cannot chdir to %s: ERROR %d: %s\n",
-                name, errno, strerror(errno));
+                print_path(work_buffer, sizeof work_buffer),
+				errno, strerror(errno));
         }
 
         /* save both to restore later */
@@ -140,4 +175,12 @@ process(char *name, char *pfx1, char *pfx2)
         buffer_remain = saved_remain;
         *buffer_pos = '\0';
     }
+
+end: /* clean path */
+
+	path[--path_n] = NULL;
+	if (path_n == 0) {
+		free(path);
+		path = NULL;
+	}
 } /* process */
