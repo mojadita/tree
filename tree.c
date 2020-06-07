@@ -26,43 +26,44 @@ main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "aghilmops")) >= 0) {
+    while((opt = getopt(argc, argv, "Aacghilmops")) >= 0) {
         switch(opt) {
-		case 'a': flags ^= FLG_SHOW_ATIME; break;
-		case 'c': flags ^= FLG_SHOW_CTIME; break;
-		case 'g': flags ^= FLG_SHOW_GROUP; break;
+        case 'A': cs ^= 1; break;
+        case 'a': flags ^= FLG_SHOW_ATIME; break;
+        case 'c': flags ^= FLG_SHOW_CTIME; break;
+        case 'g': flags ^= FLG_SHOW_GROUP; break;
         case 'h': do_help(0, argv[0]); break;
-		case 'i': flags ^= FLG_SHOW_INODE; break;
-		case 'l': flags ^= FLG_SHOW_LINKS; break;
-		case 'm': flags ^= FLG_SHOW_MTIME; break;
-		case 'o': flags ^= FLG_SHOW_OWNER; break;
-		case 'p': flags ^= FLG_SHOW_PERMS; break;
-		case 's': flags ^= FLG_SHOW_SIZE;  break;
+        case 'i': flags ^= FLG_SHOW_INODE; break;
+        case 'l': flags ^= FLG_SHOW_LINKS; break;
+        case 'm': flags ^= FLG_SHOW_MTIME; break;
+        case 'o': flags ^= FLG_SHOW_OWNER; break;
+        case 'p': flags ^= FLG_SHOW_PERMS; break;
+        case 's': flags ^= FLG_SHOW_SIZE;  break;
         } /* switch */
     } /* while */
 
     argc -= optind;
     argv += optind;
 
-	switch(argc) {
-	case 0: process(".",     "\u2500", " "); break;
-	case 1: process(argv[0], "\u2500", " "); break;
-	default: {
-			/* save current dir */
-			DIR* d = opendir(".");
+    switch(argc) {
+    case 0: process(".",     cs_neck[cs], cs_empty[cs]); break;
+    case 1: process(argv[0], cs_neck[cs], cs_empty[cs]); break;
+    default: {
+            /* save current dir */
+            DIR* d = opendir(".");
 
-			for (int i = 0; i < argc; i++) {
+            for (int i = 0; i < argc; i++) {
 
-				process(argv[i], "\u2500", " ");
+                process(argv[i], cs_neck[cs], cs_empty[cs]);
 
-				/* return to saved dir,
+                /* return to saved dir,
                  * to continue */
-				fchdir(dirfd(d));
-			}
+                fchdir(dirfd(d));
+            }
 
-			closedir(d);
-			break;
-		}
-	}
+            closedir(d);
+            break;
+        }
+    }
     exit(0);
 } /* main */

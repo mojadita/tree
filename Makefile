@@ -4,25 +4,34 @@
 # Copyright: (C) 2020 Luis Colorado.  All rights reserved.
 # License: BSD.
 
-targets			 = tree
-toclean			 = $(targets)
-all_srcs		 =
+targets          = tree
+toclean          = $(targets)
+all_srcs         =
 
-RM				?= rm -f
+prefix          ?= $(HOME)
+bindir          ?= $(prefix)/bin
+own             ?= `id -u`
+grp             ?= `id -g`
+xmod            ?= 755
+fmod            ?= 644
 
-tree_deps		 =
-tree_objs		 = tree.o process.o stinfo.o prmod.o help.o \
-					timeinfo.o
-tree_libs		 =
-tree_ldfl		 =
-toclean			+= $(tree_objs)
-all_srcs		+= $(tree_objs:.o=.c)
+RM              ?= rm -f
+
+tree_deps        =
+tree_objs        = tree.o process.o stinfo.o prmod.o help.o \
+                    timeinfo.o
+tree_libs        =
+tree_ldfl        =
+toclean         += $(tree_objs)
+all_srcs        += $(tree_objs:.o=.c)
 
 all: $(targets)
 clean:
 	$(RM) $(toclean)
 depend:
 	mkdep $(all_srcs)
+install: $(targets)
+	$(INSTALL) -o $(own) -g $(grp) -m $(xmod) tree $(bindir)/tree
 
 tree: $(tree_deps) $(tree_objs)
 	$(CC) -o $@ $(LDFLAGS) $($@_ldfl) $($@_objs) $($@_libs)

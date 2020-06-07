@@ -14,54 +14,54 @@
 
 void print_stat_info(int flags, struct stat *st)
 {
-	char *sep = "";
-	char buff[80];
-	if (flags & FLG_SHOW_INODE) {
-		printf("%si=%9lu", sep,
-			(unsigned long) st->st_ino);
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_PERMS) {
-		printf("%s%s", sep,
-			prmod(st->st_mode, buff, sizeof buff));
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_LINKS) {
-		printf("%s%3lu", sep,
-			(unsigned long) st->st_nlink);
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_OWNER) {
-		printf("%s%7d", sep,
-			st->st_uid);
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_GROUP) {
-		printf("%s%7d", sep,
-			st->st_gid);
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_SIZE) {
-		printf("%s%9llu", sep,
-			(unsigned long long)st->st_size);
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_ATIME) {
-		printf("%s%12s", sep,
-			timeinfo(st->st_atime, time(NULL),
-					buff, sizeof buff));
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_MTIME) {
-		printf("%s%12s", sep,
-			timeinfo(st->st_mtime, time(NULL),
-					buff, sizeof buff));
-		sep = " ";
-	}
-	if (flags & FLG_SHOW_CTIME) {
-		printf("%s%12s", sep,
-			timeinfo(st->st_ctime, time(NULL),
-					buff, sizeof buff));
-		sep = " ";
-	}
+    char *sep = "";
+    char buff[80];
+    if (flags & FLG_SHOW_INODE) {
+        printf("%s%9lu", sep,
+            (unsigned long) st->st_ino);
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_PERMS) {
+        printf("%s%s", sep,
+            prmod(st->st_mode, buff, sizeof buff));
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_LINKS) {
+        printf("%s%2lu", sep,
+            (unsigned long) st->st_nlink);
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_OWNER) {
+        printf("%s%7d", sep,
+            st->st_uid);
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_GROUP) {
+        printf("%s%7d", sep,
+            st->st_gid);
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_SIZE) {
+        printf("%s%9llu", sep,
+            (unsigned long long)st->st_size);
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_ATIME) {
+        printf("%s%12s", sep,
+            timeinfo(st->st_atime, time(NULL),
+                    buff, sizeof buff));
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_MTIME) {
+        printf("%s%12s", sep,
+            timeinfo(st->st_mtime, time(NULL),
+                    buff, sizeof buff));
+        sep = " ";
+    }
+    if (flags & FLG_SHOW_CTIME) {
+        printf("%s%12s", sep,
+            timeinfo(st->st_ctime, time(NULL),
+                    buff, sizeof buff));
+        sep = " ";
+    }
 } /* print_stat_info */

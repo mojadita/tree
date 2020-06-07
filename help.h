@@ -12,11 +12,11 @@
  *
  * @param code if not zero, it calls exit(3) with code as exit
  *             status to the parent process.  If zero, just shows
- * 			   the page, but returns to calling code.
+ *             the page, but returns to calling code.
  * @param progname is the name of the program.  The routine
  *                 inserts the program name in the first message,
- *				   so in case you rename the program or make
- *				   several links to it, it shows the right name.
+ *                 so in case you rename the program or make
+ *                 several links to it, it shows the right name.
  */
 void do_help(int code, char *progname);
 
