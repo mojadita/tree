@@ -32,6 +32,8 @@ depend:
 	mkdep $(all_srcs)
 install: $(targets)
 	$(INSTALL) -o $(own) -g $(grp) -m $(xmod) tree $(bindir)/tree
+deinstall:
+	$(RM) $(bindir)/tree
 
 tree: $(tree_deps) $(tree_objs)
 	$(CC) -o $@ $(LDFLAGS) $($@_ldfl) $($@_objs) $($@_libs)

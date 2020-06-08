@@ -14,7 +14,7 @@
 
 void print_stat_info(int flags, struct stat *st)
 {
-    char *sep = "";
+    char *sep = "[";
     char buff[80];
     if (flags & FLG_SHOW_INODE) {
         printf("%s%9lu", sep,
@@ -64,4 +64,5 @@ void print_stat_info(int flags, struct stat *st)
                     buff, sizeof buff));
         sep = " ";
     }
+    fputs("]", stdout);
 } /* print_stat_info */

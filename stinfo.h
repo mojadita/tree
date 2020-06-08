@@ -18,6 +18,11 @@
 #define FLG_SHOW_OWNER      (1 << 6)
 #define FLG_SHOW_PERMS      (1 << 7)
 #define FLG_SHOW_SIZE       (1 << 8)
+#define FLAG_SHOW_STAT_INFO (FLG_SHOW_ATIME | FLG_SHOW_CTIME \
+                           | FLG_SHOW_GROUP | FLG_SHOW_INODE \
+                           | FLG_SHOW_LINKS | FLG_SHOW_MTIME \
+                           | FLG_SHOW_OWNER | FLG_SHOW_PERMS \
+                           | FLG_SHOW_SIZE )
 
 /**
  * This routine prints the stat info in ls order, depending on
