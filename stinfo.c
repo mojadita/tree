@@ -11,6 +11,8 @@
 #include "stinfo.h"
 #include "prmod.h"
 #include "timeinfo.h"
+#include "pwinfo.h"
+#include "tree.h"
 
 void print_stat_info(int flags, struct stat *st)
 {
@@ -32,13 +34,15 @@ void print_stat_info(int flags, struct stat *st)
         sep = " ";
     }
     if (flags & FLG_SHOW_OWNER) {
-        printf("%s%7d", sep,
-            st->st_uid);
+        printf("%s%6s", sep,
+            get_user_name(st->st_uid,
+					buff, sizeof buff));
         sep = " ";
     }
     if (flags & FLG_SHOW_GROUP) {
-        printf("%s%7d", sep,
-            st->st_gid);
+        printf("%s%6s", sep,
+            get_group_name(st->st_gid,
+					buff, sizeof buff));
         sep = " ";
     }
     if (flags & FLG_SHOW_SIZE) {
