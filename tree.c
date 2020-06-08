@@ -18,15 +18,15 @@
 #include "stinfo.h"
 #include "tree.h"
 
-
-int flags = 0; /* this variable is global. */
+/* this variable is global. */
+int flags = FLG_SHOW_PERMS | FLG_SORT;
 
 int
 main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "Aacghilmnoprs")) >= 0) {
+    while((opt = getopt(argc, argv, "AacghilmnoprSs")) >= 0) {
         switch(opt) {
         case 'A': cs    ^= 1;              break;
         case 'a': flags ^= FLG_SHOW_ATIME; break;
@@ -36,10 +36,11 @@ main(int argc, char **argv)
         case 'i': flags ^= FLG_SHOW_INODE; break;
         case 'l': flags ^= FLG_SHOW_LINKS; break;
         case 'm': flags ^= FLG_SHOW_MTIME; break;
-		case 'n': flags ^= FLG_NUMERICAL;  break;
+        case 'n': flags ^= FLG_NUMERICAL;  break;
         case 'o': flags ^= FLG_SHOW_OWNER; break;
         case 'p': flags ^= FLG_SHOW_PERMS; break;
-		case 'r': flags ^= FLG_REVERSE;    break;
+        case 'r': flags ^= FLG_REVERSE;    break;
+        case 'S': flags ^= FLG_SORT;       break;
         case 's': flags ^= FLG_SHOW_SIZE;  break;
         } /* switch */
     } /* while */
@@ -65,7 +66,8 @@ main(int argc, char **argv)
 
             closedir(d);
             break;
-        }
-    }
+        } /* default: */
+    } /* switch */
+
     exit(0);
 } /* main */

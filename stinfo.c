@@ -36,13 +36,13 @@ void print_stat_info(int flags, struct stat *st)
     if (flags & FLG_SHOW_OWNER) {
         printf("%s%6s", sep,
             get_user_name(st->st_uid,
-					buff, sizeof buff));
+                    buff, sizeof buff));
         sep = " ";
     }
     if (flags & FLG_SHOW_GROUP) {
         printf("%s%6s", sep,
             get_group_name(st->st_gid,
-					buff, sizeof buff));
+                    buff, sizeof buff));
         sep = " ";
     }
     if (flags & FLG_SHOW_SIZE) {

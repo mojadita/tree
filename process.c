@@ -170,8 +170,9 @@ process(char *name, char *pfx1, char *pfx2)
         }
         closedir(d);
 
-        qsort(list, list_size, sizeof *list,
-				flags & FLG_REVERSE ? desc : asc);
+        if (flags & FLG_SORT)
+            qsort(list, list_size, sizeof *list,
+                    flags & FLG_REVERSE ? desc : asc);
 
         /* process each entry */
         for (int i = 0; i < list_size; i++) {

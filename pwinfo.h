@@ -12,12 +12,12 @@
  * @param uid is the user id of the user.
  * @param buf pointer to a buffer area where to print the name of
  *            the user.
- * @param sz  size of the buffer. 
+ * @param sz  size of the buffer.
  * @return    the buffer pointer, to be used directly in
  *            printf().
  */
 char *get_user_name(
-		int uid, char *buf, size_t sz);
+        int uid, char *buf, size_t sz);
 
 /* writes a string representing the name of the group (given the
  * gid) in the buffer of size sz pointed to by buf.

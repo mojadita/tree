@@ -29,8 +29,9 @@
 #define FLG_SHOW_PERMS      (1 << 7)
 #define FLG_SHOW_SIZE       (1 << 8)
 
-#define FLG_NUMERICAL		(1 << 9)
-#define FLG_REVERSE			(1 << 10)
+#define FLG_NUMERICAL       (1 << 9)
+#define FLG_REVERSE         (1 << 10)
+#define FLG_SORT            (1 << 11)
 
 #define FLAG_SHOW_STAT_INFO (FLG_SHOW_ATIME | FLG_SHOW_CTIME \
                            | FLG_SHOW_GROUP | FLG_SHOW_INODE \
