@@ -26,7 +26,7 @@ main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "AacghilmnoprSs")) >= 0) {
+    while((opt = getopt(argc, argv, "AacghilmnoprSsy")) >= 0) {
         switch(opt) {
         case 'A': cs    ^= 1;              break;
         case 'a': flags ^= FLG_SHOW_ATIME; break;
@@ -42,6 +42,7 @@ main(int argc, char **argv)
         case 'r': flags ^= FLG_REVERSE;    break;
         case 'S': flags ^= FLG_SORT;       break;
         case 's': flags ^= FLG_SHOW_SIZE;  break;
+		case 'y': flags ^= FLG_SHOW_LINK;  break;
         } /* switch */
     } /* while */
 

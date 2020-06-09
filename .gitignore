@@ -1,3 +1,4 @@
 *.o
 tree
 .depend
+tree.1.gz

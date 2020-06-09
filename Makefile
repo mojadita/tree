@@ -24,7 +24,7 @@ RM              ?= rm -f
 
 tree_deps        =
 tree_objs        = tree.o process.o stinfo.o prmod.o help.o \
-                    timeinfo.o pwinfo.o
+                    timeinfo.o pwinfo.o link.o
 tree_libs        =
 tree_ldfl        =
 toclean         += $(tree_objs)

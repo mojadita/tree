@@ -16,8 +16,9 @@
 #include <unistd.h>
 
 #include "process.h"
-#include "stinfo.h"
 #include "tree.h"
+#include "stinfo.h"
+#include "link.h"
 
 #define MAX_PREFIX      (8192)
 #define DEFCAP          (10)
@@ -128,7 +129,13 @@ process(char *name, char *pfx1, char *pfx2)
     }
 
     /* print our own prefix and name */
-    printf("%s%s %s\n", buffer, pfx1, name);
+    printf("%s%s %s", buffer, pfx1, name);
+
+	if (flags & FLG_SHOW_LINK && S_ISLNK(stbuf.st_mode)) {
+		printf(" -> %s", link_info(name,
+				work_buffer, sizeof work_buffer));
+	}
+	puts(""); /* end of line */
 
     /* if is dir, recurse, with all of its children. */
     if (S_ISDIR(stbuf.st_mode)) {

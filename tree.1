@@ -6,7 +6,7 @@
 .Nd tree listing of filesystem paths.
 .Sh SYNOPSIS
 .Nm tree
-.Op Fl Aacghilmnoprs
+.Op Fl Aacghilmnoprsy
 .Op Ar path Cm ...
 .Sh DESCRIPTION
 The
@@ -100,6 +100,9 @@ files in the listing.
 .It Fl s
 This option toggles the inclusion of the size field in the
 listing.
+.It Fl y
+This option makes for symbolic links to print also the pointed
+target.
 .El
 .Sh AUTHOR
 .An "Luis Colorado" Aq Mt luiscoloradourcola@gmail.com

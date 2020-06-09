@@ -46,7 +46,7 @@ void print_stat_info(int flags, struct stat *st)
         sep = " ";
     }
     if (flags & FLG_SHOW_SIZE) {
-        printf("%s%9llu", sep,
+        printf("%s%10llu", sep,
             (unsigned long long)st->st_size);
         sep = " ";
     }
