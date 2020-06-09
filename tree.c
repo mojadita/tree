@@ -19,30 +19,34 @@
 #include "tree.h"
 
 /* this variable is global. */
-int flags = FLG_SHOW_PERMS | FLG_SORT;
+int flags = FLG_NOSHOW_HIDDEN | FLG_SHOW_PERMS | FLG_SORT;
 
 int
 main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "AacghilmnoprSsy")) >= 0) {
+    while((opt = getopt(argc, argv, "AacgHhilmnoprSsy")) >= 0) {
         switch(opt) {
-        case 'A': cs    ^= 1;              break;
-        case 'a': flags ^= FLG_SHOW_ATIME; break;
-        case 'c': flags ^= FLG_SHOW_CTIME; break;
-        case 'g': flags ^= FLG_SHOW_GROUP; break;
-        case 'h': do_help(0, argv[0]);     break;
-        case 'i': flags ^= FLG_SHOW_INODE; break;
-        case 'l': flags ^= FLG_SHOW_LINKS; break;
-        case 'm': flags ^= FLG_SHOW_MTIME; break;
-        case 'n': flags ^= FLG_NUMERICAL;  break;
-        case 'o': flags ^= FLG_SHOW_OWNER; break;
-        case 'p': flags ^= FLG_SHOW_PERMS; break;
-        case 'r': flags ^= FLG_REVERSE;    break;
-        case 'S': flags ^= FLG_SORT;       break;
-        case 's': flags ^= FLG_SHOW_SIZE;  break;
-		case 'y': flags ^= FLG_SHOW_LINK;  break;
+            /* illegal option */
+        case '?': do_help(1, argv[0]);
+            /* NOTREACHED */
+        case 'A': cs    ^= 1;                 break;
+        case 'a': flags ^= FLG_SHOW_ATIME;    break;
+        case 'c': flags ^= FLG_SHOW_CTIME;    break;
+        case 'g': flags ^= FLG_SHOW_GROUP;    break;
+        case 'H': flags ^= FLG_NOSHOW_HIDDEN; break;
+        case 'h': do_help(0, argv[0]);        break;
+        case 'i': flags ^= FLG_SHOW_INODE;    break;
+        case 'l': flags ^= FLG_SHOW_LINKS;    break;
+        case 'm': flags ^= FLG_SHOW_MTIME;    break;
+        case 'n': flags ^= FLG_NUMERICAL;     break;
+        case 'o': flags ^= FLG_SHOW_OWNER;    break;
+        case 'p': flags ^= FLG_SHOW_PERMS;    break;
+        case 'r': flags ^= FLG_REVERSE;       break;
+        case 'S': flags ^= FLG_SORT;          break;
+        case 's': flags ^= FLG_SHOW_SIZE;     break;
+        case 'y': flags ^= FLG_SHOW_LINK;     break;
         } /* switch */
     } /* while */
 

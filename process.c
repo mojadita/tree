@@ -84,10 +84,11 @@ print_path(char *buf, size_t sz)
 void
 process(char *name, char *pfx1, char *pfx2)
 {
+
     /* strip trailing '/' (only if name is not "/") */
     if (strcmp(name, "/") != 0){
         int l = strlen(name);
-        while (name[--l] == '/')
+        while (l > 1 && name[--l] == '/')
             name[l] = '\0';
     }
 
@@ -131,11 +132,11 @@ process(char *name, char *pfx1, char *pfx2)
     /* print our own prefix and name */
     printf("%s%s %s", buffer, pfx1, name);
 
-	if (flags & FLG_SHOW_LINK && S_ISLNK(stbuf.st_mode)) {
-		printf(" -> %s", link_info(name,
-				work_buffer, sizeof work_buffer));
-	}
-	puts(""); /* end of line */
+    if (flags & FLG_SHOW_LINK && S_ISLNK(stbuf.st_mode)) {
+        printf(" -> %s", link_info(name,
+                work_buffer, sizeof work_buffer));
+    }
+    puts(""); /* end of line */
 
     /* if is dir, recurse, with all of its children. */
     if (S_ISDIR(stbuf.st_mode)) {
@@ -173,10 +174,17 @@ process(char *name, char *pfx1, char *pfx2)
         size_t list_cap       = DEFCAP;
         size_t list_size      = 0;
         while ((de = readdir(d)) != NULL) {
-            /* skip . and .. */
-            if (strcmp(de->d_name, ".") == 0 ||
-                strcmp(de->d_name, "..") == 0)
+
+            if ( (strcmp(de->d_name, ".")  == 0)
+               ||(strcmp(de->d_name, "..") == 0))
+            {
                 continue;
+            }
+            if ( (flags & FLG_NOSHOW_HIDDEN)
+              && (de->d_name[0] == '.') )
+            {
+                continue;
+            }
 
             /* if we are full, grow the array. */
             if (list_size == list_cap) {
