@@ -63,7 +63,8 @@ static size_t path_cap;
 /* prints the above path list of names in the specified buffer.
  * The function returns a pointer to the buffer, to allow to use
  * it directly in the printf parameter list.  */
-static char *print_path(char *buf, size_t sz)
+static char *
+print_path(char *buf, size_t sz)
 {
     char *sep = "", *saved_buf = buf;
     size_t n;
@@ -82,6 +83,13 @@ static char *print_path(char *buf, size_t sz)
 void
 process(char *name, char *pfx1, char *pfx2)
 {
+    /* strip trailing '/' (only if name is not "/") */
+    if (strcmp(name, "/") != 0){
+        int l = strlen(name);
+        while (name[--l] == '/')
+            name[l] = '\0';
+    }
+
     /* work buffer to build the complete path name, in case we
      * have to signal an error.  */
     static char work_buffer[16384];
@@ -95,7 +103,10 @@ process(char *name, char *pfx1, char *pfx2)
         path_cap <<= 1;
         path = realloc(path, path_cap * sizeof *path);
     }
-    path[path_n++] = name;
+
+    path[path_n++] = strcmp(name, "/")
+            ? name          /* non-root directory */
+            : "";           /* root directory */
 
     /* stat the file, if fd == -1, then we are at a root
      * node, and we don't have a directory file descriptor
@@ -103,13 +114,12 @@ process(char *name, char *pfx1, char *pfx2)
      * the fstat(2) call using the file descriptor of the
      * parent directory. */
     struct stat stbuf;
-    int res = stat(name, &stbuf);
+    int res = lstat(name, &stbuf);
     if (res < 0) {
         WARN("stat %s: ERROR %d: %s\n",
             print_path(work_buffer, sizeof work_buffer),
             errno, strerror(errno));
-        path[--path_n] = NULL;
-        return;
+        goto end;
     }
 
     /* print the stat info (we use another line) */
@@ -133,10 +143,13 @@ process(char *name, char *pfx1, char *pfx2)
                 errno, strerror(errno));
             goto end;
         }
+
         if (chdir(name) < 0) {
-            WARN("cannot chdir to %s: ERROR %d: %s\n",
+            WARN("chdir to %s: ERROR %d: %s\n",
                 print_path(work_buffer, sizeof work_buffer),
                 errno, strerror(errno));
+            closedir(d);
+            goto end;
         }
 
         /* save both to restore later */
@@ -170,9 +183,10 @@ process(char *name, char *pfx1, char *pfx2)
         }
         closedir(d);
 
-        if (flags & FLG_SORT)
+        if (flags & FLG_SORT) {
             qsort(list, list_size, sizeof *list,
                     flags & FLG_REVERSE ? desc : asc);
+        }
 
         /* process each entry */
         for (int i = 0; i < list_size; i++) {
@@ -199,7 +213,7 @@ process(char *name, char *pfx1, char *pfx2)
 
 end: /* clean path */
 
-    path[--path_n] = NULL;
+    --path_n;
     if (path_n == 0) {
         free(path);
         path = NULL;

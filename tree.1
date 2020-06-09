@@ -40,10 +40,13 @@ command.
 .It links
 The number of hard links pointing to the file/directory inode.
 .It user
-The user name is printed (actually unimplemented, what is printed
-is the user id number)
+The user name is printed (or if the option
+.Fl n
+is used, only the user id number)
 .It group
-The group name (actually unimplemented, the gid of the file if
+The group name (or the gid number if the option
+.Fl n
+is used)
 printed)
 .It size
 The size of the file in bytes.

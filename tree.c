@@ -49,15 +49,18 @@ main(int argc, char **argv)
     argv += optind;
 
     switch(argc) {
-    case 0: process(".",     cs_neck[cs], cs_empty[cs]); break;
-    case 1: process(argv[0], cs_neck[cs], cs_empty[cs]); break;
+    case 0: process(".",
+        cs_neck[cs], cs_empty[cs]); break;
+    case 1: process(argv[0],
+        cs_neck[cs], cs_empty[cs]); break;
     default: {
             /* save current dir */
             DIR* d = opendir(".");
 
             for (int i = 0; i < argc; i++) {
 
-                process(argv[i], cs_neck[cs], cs_empty[cs]);
+                process(argv[i],
+                    cs_neck[cs], cs_empty[cs]);
 
                 /* return to saved dir,
                  * to continue */
