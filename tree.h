@@ -10,12 +10,14 @@
 #define F(_fmt) __FILE__":%d:%s:"_fmt,__LINE__,__func__
 
 #define WARN(_fmt, ...) fprintf(stderr,         \
-            F(_fmt),##__VA_ARGS__)
+            F("WARNING: "_fmt ": Error %d: %s\n"), ##__VA_ARGS__, errno, strerror(errno))
 
 #define ERR(_code, _fmt, ...)                   \
     do {                                        \
         fprintf(stderr,                         \
-                F(_fmt),##__VA_ARGS__);         \
+                F("ERROR %d: "_fmt": %s\n"),	\
+				errno, ##__VA_ARGS__,			\
+				strerror(errno));         		\
         exit(_code);                            \
     } while(0)
 
