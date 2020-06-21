@@ -220,7 +220,7 @@ process(char *name, char *pfx1, char *pfx2)
         chdir("..");
 
 restore:
-		/* restore the position of prefix */
+        /* restore the position of prefix */
         buffer_pos = saved_pos;
         buffer_remain = saved_remain;
         *buffer_pos = '\0';
