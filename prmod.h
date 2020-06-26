@@ -7,6 +7,8 @@
 #ifndef _PRMOD_H
 #define _PRMOD_H
 
+#include <sys/types.h>
+
 /**
  * prmod prints a mode_t in a format similar to the one used in
  * ls -l.
