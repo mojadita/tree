@@ -8,7 +8,7 @@ targets          = tree
 toclean          = $(targets)
 all_srcs         =
 
-prefix          ?= /usr/local
+prefix          ?= ${HOME}
 bindir          ?= $(prefix)/bin
 mandir          ?= $(prefix)/man
 man1dir         ?= $(mandir)/man1

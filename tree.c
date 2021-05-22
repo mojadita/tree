@@ -19,7 +19,10 @@
 #include "tree.h"
 
 /* this variable is global. */
-int flags = FLG_NOSHOW_HIDDEN | FLG_SHOW_PERMS | FLG_SORT;
+int flags = FLG_NOSHOW_HIDDEN
+	      | FLG_SHOW_PERMS
+		  | FLG_SORT
+		  | FLG_SHOW_LINK;
 
 int
 main(int argc, char **argv)
