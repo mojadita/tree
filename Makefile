@@ -8,7 +8,7 @@ targets          = tree
 toclean          = $(targets)
 all_srcs         =
 
-prefix          ?= /usr/local
+prefix          ?= ${HOME}
 bindir          ?= $(prefix)/bin
 mandir          ?= $(prefix)/man
 man1dir         ?= $(mandir)/man1
@@ -21,6 +21,7 @@ manpg            = tree.1.gz
 toclean         += $(manpg)
 
 RM              ?= rm -f
+INSTALL			?= /usr/bin/install
 
 tree_deps        =
 tree_objs        = tree.o process.o stinfo.o prmod.o help.o \

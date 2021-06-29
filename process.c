@@ -20,7 +20,7 @@
 #include "stinfo.h"
 #include "link.h"
 
-#define MAX_PREFIX      (8192)
+#define MAX_PREFIX      (65536)
 #define DEFCAP          (10)
 #define DEF_PATH_CAP    (16)
 
@@ -94,7 +94,7 @@ process(char *name, char *pfx1, char *pfx2)
 
     /* work buffer to build the complete path name, in case we
      * have to signal an error.  */
-    static char work_buffer[16384];
+    static char work_buffer[65536];
 
     if (path == NULL) {
         path_cap = DEF_PATH_CAP;
@@ -118,9 +118,8 @@ process(char *name, char *pfx1, char *pfx2)
     struct stat stbuf;
     int res = lstat(name, &stbuf);
     if (res < 0) {
-        WARN("stat %s: ERROR %d: %s\n",
-            print_path(work_buffer, sizeof work_buffer),
-            errno, strerror(errno));
+        WARN("stat '%s'",
+            print_path(work_buffer, sizeof work_buffer));
         goto end;
     }
 
@@ -144,22 +143,6 @@ process(char *name, char *pfx1, char *pfx2)
         /* ... and add the prefix for children to the buffer */
         int n = snprintf(buffer_pos, buffer_remain, "%s", pfx2);
 
-        DIR *d = opendir(name);
-        if (!d) {
-            WARN("opendir %s: ERROR %d: %s\n",
-                print_path(work_buffer, sizeof work_buffer),
-                errno, strerror(errno));
-            goto end;
-        }
-
-        if (chdir(name) < 0) {
-            WARN("chdir to %s: ERROR %d: %s\n",
-                print_path(work_buffer, sizeof work_buffer),
-                errno, strerror(errno));
-            closedir(d);
-            goto end;
-        }
-
         /* save both to restore later */
         char *saved_pos       = buffer_pos;
         int   saved_remain    = buffer_remain;
@@ -167,6 +150,20 @@ process(char *name, char *pfx1, char *pfx2)
         /* position to the end of the buffer */
         buffer_pos           += n;
         buffer_remain        -= n;
+
+        DIR *d = opendir(name);
+        if (!d) {
+            WARN("opendir '%s'",
+                print_path(work_buffer, sizeof work_buffer));
+            goto restore;
+        }
+
+        if (chdir(name) < 0) {
+            WARN("chdir to '%s'",
+                print_path(work_buffer, sizeof work_buffer));
+            closedir(d);
+            goto restore;
+        }
 
         /* read directory entries */
         struct dirent *de     = NULL;
@@ -221,6 +218,9 @@ process(char *name, char *pfx1, char *pfx2)
 
         /* return back */
         chdir("..");
+
+restore:
+        /* restore the position of prefix */
         buffer_pos = saved_pos;
         buffer_remain = saved_remain;
         *buffer_pos = '\0';
