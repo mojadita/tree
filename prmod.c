@@ -5,6 +5,7 @@
  * License: BSD.
  */
 
+#include <stddef.h>
 #include <sys/stat.h>
 
 #include "prmod.h"
@@ -33,7 +34,9 @@ prmod(
     CASE( S_IFREG,  '-');
     CASE( S_IFLNK,  'l');
     CASE( S_IFSOCK, 's');
+#ifdef S_IFWHT
     CASE( S_IFWHT,  'w');
+#endif
 #undef CASE
     }
 
