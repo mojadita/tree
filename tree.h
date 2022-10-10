@@ -38,6 +38,7 @@
 #define FLG_NUMERICAL       (1 << 11)
 #define FLG_REVERSE         (1 << 12)
 #define FLG_SORT            (1 << 13)
+#define FLG_SHOW_DIR        (1 << 14)
 
 #define FLAG_SHOW_STAT_INFO (FLG_SHOW_ATIME | FLG_SHOW_CTIME \
                            | FLG_SHOW_GROUP | FLG_SHOW_INODE \

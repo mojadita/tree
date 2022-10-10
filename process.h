@@ -32,6 +32,8 @@ extern int cs;
  *             print in front of this node.
  * @param pfx2 is the prefix to append to the buffer to print in
  *             front of all this child's children.
+ * @param stbuf is the stat(2) of the path we are searching. We
+ *              receive it from the parent.
  */
 void
 process(char *name, char *pfx1, char *pfx2);

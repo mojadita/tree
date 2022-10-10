@@ -29,7 +29,7 @@ main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "AacgHhilmnoprSsy")) >= 0) {
+    while((opt = getopt(argc, argv, "AacdgHhilmnoprSsy")) >= 0) {
         switch(opt) {
             /* illegal option */
         case '?': do_help(1, argv[0]);
@@ -37,6 +37,8 @@ main(int argc, char **argv)
         case 'A': cs    ^= 1;                 break;
         case 'a': flags ^= FLG_SHOW_ATIME;    break;
         case 'c': flags ^= FLG_SHOW_CTIME;    break;
+        case 'd': flags ^= FLG_SHOW_DIR;
+                  flags ^= FLG_SHOW_PERMS;    break;
         case 'g': flags ^= FLG_SHOW_GROUP;    break;
         case 'H': flags ^= FLG_NOSHOW_HIDDEN; break;
         case 'h': do_help(0, argv[0]);        break;

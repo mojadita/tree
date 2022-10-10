@@ -82,7 +82,9 @@ print_path(char *buf, size_t sz)
 
 /* The node processing function.  */
 void
-process(char *name, char *pfx1, char *pfx2)
+process(char *name,
+        char *pfx1,
+        char *pfx2)
 {
 
     /* strip trailing '/' (only if name is not "/") */
@@ -110,35 +112,25 @@ process(char *name, char *pfx1, char *pfx2)
             ? name          /* non-root directory */
             : "";           /* root directory */
 
-    /* stat the file, if fd == -1, then we are at a root
-     * node, and we don't have a directory file descriptor
-     * yet, just use normal stat for it.  Otherwise, use
-     * the fstat(2) call using the file descriptor of the
-     * parent directory. */
-    struct stat stbuf;
-    int res = lstat(name, &stbuf);
-    if (res < 0) {
-        WARN("stat '%s'",
-            print_path(work_buffer, sizeof work_buffer));
-        goto end;
-    }
+    struct stat stbuf_node;
+    int res = lstat(name, &stbuf_node);
 
     /* print the stat info (we use another line) */
     if (flags & FLAG_SHOW_STAT_INFO) {
-        print_stat_info(flags, &stbuf);
+        print_stat_info(flags, &stbuf_node);
     }
 
     /* print our own prefix and name */
     printf("%s%s %s", buffer, pfx1, name);
 
-    if (flags & FLG_SHOW_LINK && S_ISLNK(stbuf.st_mode)) {
+    if ((flags & FLG_SHOW_LINK) && S_ISLNK(stbuf_node.st_mode)) {
         printf(" -> %s", link_info(name,
                 work_buffer, sizeof work_buffer));
     }
     puts(""); /* end of line */
 
     /* if is dir, recurse, with all of its children. */
-    if (S_ISDIR(stbuf.st_mode)) {
+    if (S_ISDIR(stbuf_node.st_mode)) {
 
         /* ... and add the prefix for children to the buffer */
         int n = snprintf(buffer_pos, buffer_remain, "%s", pfx2);
@@ -169,7 +161,7 @@ process(char *name, char *pfx1, char *pfx2)
         struct dirent *de     = NULL;
         char **list           = calloc(DEFCAP, sizeof *list);
         size_t list_cap       = DEFCAP;
-        size_t list_size      = 0;
+        size_t list_len       = 0;
         while ((de = readdir(d)) != NULL) {
 
             if ( (strcmp(de->d_name, ".")  == 0)
@@ -184,35 +176,47 @@ process(char *name, char *pfx1, char *pfx2)
             }
 
             /* if we are full, grow the array. */
-            if (list_size == list_cap) {
+            if (list_len == list_cap) {
                 list_cap    <<= 1;
                 list          = realloc(
                         list, list_cap * sizeof *list);
             }
 
-            /* add element */
-            list[list_size++] = strdup(de->d_name);
+            if (flags & FLG_SHOW_DIR) {
+                struct stat stbuf_chld;
+                int res = lstat(de->d_name, &stbuf_chld);
+                if (res < 0) {
+                    WARN("lstat: %s: %s\n",
+                            print_path(work_buffer, sizeof work_buffer),
+                            strerror(errno));
+                    continue;
+                }
+                if (!S_ISDIR(stbuf_chld.st_mode)) {
+                    continue;
+                }
+            }
+            list[list_len++] = strdup(de->d_name);
         }
         closedir(d);
 
         if (flags & FLG_SORT) {
-            qsort(list, list_size, sizeof *list,
+            qsort(list, list_len, sizeof *list,
                     flags & FLG_REVERSE ? desc : asc);
         }
 
         /* process each entry */
-        for (int i = 0; i < list_size; i++) {
+        for (int i = 0; i < list_len; i++) {
             process(list[i],
-                (i < list_size - 1
+                (i < list_len - 1
                     ? cs_neck_right     /* " |- " */
                     : cs_shoulder)[cs], /* " `- " */
-                (i < list_size - 1
+                (i < list_len - 1
                     ? cs_right          /* " |  " */
                     : cs_empty)[cs]);   /* "    " */
         }
 
         /* free used memory */
-        for (int i = 0; i < list_size; i++)
+        for (int i = 0; i < list_len; i++)
             free(list[i]);
         free(list);
 
