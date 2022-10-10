@@ -6,7 +6,7 @@
 .Nd tree listing of filesystem paths.
 .Sh SYNOPSIS
 .Nm tree
-.Op Fl AacgHhilmnoprsy
+.Op Fl AacdgHhilmnoprsy
 .Op Ar path Cm ...
 .Sh DESCRIPTION
 The
@@ -71,6 +71,15 @@ file in the listing.
 .It Fl c
 Toggles the inclusion of the last inode modification
 to the file in the listing.
+.It Fl d
+Toggles showing only directories hierarchy or also show
+files info.
+Default: files and directories are shown.
+Note that changing this option also changes showing the
+permissions, so, in case you want both, then you need
+to also use
+.Fl p
+option.
 .It Fl g
 Toggles the inclusion of the group name of the file
 to the file in the listing.
