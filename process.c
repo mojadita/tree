@@ -30,7 +30,7 @@ static int  buffer_remain = sizeof buffer;
 
 /**** CHAR SEQUENCES TO DRAW THE TREE ********************/
 char *cs_neck[]        = { "---", "\u2500\u2500" };
-char *cs_neck_right[]  = { " +-", " \u251c" };
+char *cs_neck_right[]  = { " |-", " \u251c" };
 char *cs_right[]       = { " | ", " \u2502" };
 char *cs_shoulder[]    = { " `-", " \u2514" };
 char *cs_empty[]       = { "   ", "  " };
@@ -116,9 +116,7 @@ process(char *name,
     int res = lstat(name, &stbuf_node);
 
     /* print the stat info (we use another line) */
-    if (flags & FLAG_SHOW_STAT_INFO) {
-        print_stat_info(flags, &stbuf_node);
-    }
+	print_stat_info(flags, &stbuf_node);
 
     /* print our own prefix and name */
     printf("%s%s %s", buffer, pfx1, name);

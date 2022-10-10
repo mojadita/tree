@@ -29,18 +29,19 @@ main(int argc, char **argv)
 {
     int opt;
 
-    while((opt = getopt(argc, argv, "AacdgHhilmnoprSsy")) >= 0) {
+    while((opt = getopt(argc, argv, ".AacdgHhilmnoprSsy")) >= 0) {
         switch(opt) {
             /* illegal option */
         case '?': do_help(1, argv[0]);
             /* NOTREACHED */
-        case 'A': cs    ^= 1;                 break;
-        case 'a': flags ^= FLG_SHOW_ATIME;    break;
-        case 'c': flags ^= FLG_SHOW_CTIME;    break;
+		case '.': flags ^= FLG_NOSHOW_HIDDEN; break;
+		case 'A': cs    ^= 1;                 break;
+		case 'a': flags ^= FLG_SHOW_ATIME;    break;
+		case 'c': flags ^= FLG_SHOW_CTIME;    break;
         case 'd': flags ^= FLG_SHOW_DIR;
                   flags ^= FLG_SHOW_PERMS;    break;
         case 'g': flags ^= FLG_SHOW_GROUP;    break;
-        case 'H': flags ^= FLG_NOSHOW_HIDDEN; break;
+        case 'H': flags ^= FLG_SHOW_HDR;      break;
         case 'h': do_help(0, argv[0]);        break;
         case 'i': flags ^= FLG_SHOW_INODE;    break;
         case 'l': flags ^= FLG_SHOW_LINKS;    break;
@@ -59,15 +60,24 @@ main(int argc, char **argv)
     argv += optind;
 
     switch(argc) {
-    case 0: process(".",
-        cs_neck[cs], cs_empty[cs]); break;
-    case 1: process(argv[0],
-        cs_neck[cs], cs_empty[cs]); break;
+
+    case 0:
+        print_stat_head(flags);
+		process(".", cs_neck[cs], cs_empty[cs]);
+		break;
+
+    case 1:
+        print_stat_head(flags);
+		process(*argv, cs_neck[cs], cs_empty[cs]);
+		break;
+
     default: {
             /* save current dir */
             DIR* d = opendir(".");
 
             for (int i = 0; i < argc; i++) {
+
+                print_stat_head(flags);
 
                 process(argv[i],
                     cs_neck[cs], cs_empty[cs]);
@@ -75,7 +85,7 @@ main(int argc, char **argv)
                 /* return to saved dir,
                  * to continue */
                 fchdir(dirfd(d));
-            }
+            } /* for */
 
             closedir(d);
             break;

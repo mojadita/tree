@@ -6,7 +6,7 @@
 .Nd tree listing of filesystem paths.
 .Sh SYNOPSIS
 .Nm tree
-.Op Fl AacdgHhilmnoprsy
+.Op Fl .AacdgHhilmnoprsy
 .Op Ar path Cm ...
 .Sh DESCRIPTION
 The
@@ -14,7 +14,6 @@ The
 prints a listing of files as a tree, using box drawing characters
 from the UTF set, or the ASCII characters
 .Cm '-' ,
-.Cm '+' ,
 .Cm '`'
 and
 .Cm '|' .
@@ -61,6 +60,10 @@ This is always printed.
 .El
 .Sh OPTIONS
 .Bl -tag
+.It Fl \&.
+Toggles the switch that shows/hides dot files/directories
+to be shown/explored in the filesystem hierarchy.
+Defaults to hide the dot files.
 .It Fl A
 Toggles the switch between using utf-8 box drawing
 characters and ASCII characters.
@@ -84,7 +87,8 @@ option.
 Toggles the inclusion of the group name of the file
 to the file in the listing.
 .It Fl H
-Toggles the showing of hidden files and directories.
+Toggles showing a header before each directory entry
+specified in the command line.
 .It Fl h
 Toggles the display of the help screen.
 .It Fl i

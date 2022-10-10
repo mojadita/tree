@@ -20,4 +20,6 @@
  */
 void print_stat_info(int flags, struct stat *st);
 
+void print_stat_head(int flags);
+
 #endif /* _STINFO_H */
