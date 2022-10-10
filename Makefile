@@ -9,8 +9,11 @@ toclean          = $(targets)
 all_srcs         =
 
 prefix          ?= ${HOME}
-bindir          ?= $(prefix)/bin
-mandir          ?= $(prefix)/man
+exec_prefix     ?= $(prefix)
+bindir          ?= $(exec_prefix)/bin
+rootdatadir     ?= $(prefix)/share
+datadir         ?= $(rootdatadir)
+mandir          ?= $(datadir)/man
 man1dir         ?= $(mandir)/man1
 own             ?= `id -u`
 grp             ?= `id -g`
