@@ -20,7 +20,6 @@
 
 /* this variable is global. */
 int flags = FLG_NOSHOW_HIDDEN
-	      | FLG_SHOW_PERMS
 		  | FLG_SORT
 		  | FLG_SHOW_LINK;
 
@@ -38,8 +37,7 @@ main(int argc, char **argv)
 		case 'A': cs    ^= 1;                 break;
 		case 'a': flags ^= FLG_SHOW_ATIME;    break;
 		case 'c': flags ^= FLG_SHOW_CTIME;    break;
-        case 'd': flags ^= FLG_SHOW_DIR;
-                  flags ^= FLG_SHOW_PERMS;    break;
+        case 'd': flags ^= FLG_SHOW_DIR;      break;
         case 'g': flags ^= FLG_SHOW_GROUP;    break;
         case 'H': flags ^= FLG_SHOW_HDR;      break;
         case 'h': do_help(0, argv[0]);        break;
