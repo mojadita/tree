@@ -114,6 +114,10 @@ process(char *name,
 
     struct stat stbuf_node;
     int res = lstat(name, &stbuf_node);
+    if (res < 0) {
+        WARN("lstat '%s'", name);
+        goto end;
+    }
 
     /* print the stat info (we use another line) */
 	print_stat_info(flags, &stbuf_node);
