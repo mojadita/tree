@@ -113,9 +113,9 @@ process(char *name,
             : "";           /* root directory */
 
     struct stat stbuf_node;
-    int res = lstat(name, &stbuf_node);
+    int res = stat(name, &stbuf_node);
     if (res < 0) {
-        WARN("lstat '%s'", name);
+        WARN("stat '%s'", name);
         goto end;
     }
 
@@ -186,9 +186,9 @@ process(char *name,
 
             if (flags & FLG_SHOW_DIR) {
                 struct stat stbuf_chld;
-                int res = lstat(de->d_name, &stbuf_chld);
+                int res = stat(de->d_name, &stbuf_chld);
                 if (res < 0) {
-                    WARN("lstat: %s: %s\n",
+                    WARN("stat: %s: %s\n",
                             print_path(work_buffer, sizeof work_buffer),
                             strerror(errno));
                     continue;
