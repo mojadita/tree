@@ -20,8 +20,8 @@
 
 /* this variable is global. */
 int flags = FLG_NOSHOW_HIDDEN
-		  | FLG_SORT
-		  | FLG_SHOW_LINK;
+          | FLG_SORT
+          | FLG_SHOW_LINK;
 
 int
 main(int argc, char **argv)
@@ -33,10 +33,10 @@ main(int argc, char **argv)
             /* illegal option */
         case '?': do_help(1, argv[0]);
             /* NOTREACHED */
-		case '.': flags ^= FLG_NOSHOW_HIDDEN; break;
-		case 'A': cs    ^= 1;                 break;
-		case 'a': flags ^= FLG_SHOW_ATIME;    break;
-		case 'c': flags ^= FLG_SHOW_CTIME;    break;
+        case '.': flags ^= FLG_NOSHOW_HIDDEN; break;
+        case 'A': cs    ^= 1;                 break;
+        case 'a': flags ^= FLG_SHOW_ATIME;    break;
+        case 'c': flags ^= FLG_SHOW_CTIME;    break;
         case 'd': flags ^= FLG_SHOW_DIR;      break;
         case 'g': flags ^= FLG_SHOW_GROUP;    break;
         case 'H': flags ^= FLG_SHOW_HDR;      break;
@@ -61,13 +61,13 @@ main(int argc, char **argv)
 
     case 0:
         print_stat_head(flags);
-		process(".", cs_neck[cs], cs_empty[cs]);
-		break;
+        process(".", cs_neck[cs], cs_empty[cs]);
+        break;
 
     case 1:
         print_stat_head(flags);
-		process(*argv, cs_neck[cs], cs_empty[cs]);
-		break;
+        process(*argv, cs_neck[cs], cs_empty[cs]);
+        break;
 
     default: {
             /* save current dir */

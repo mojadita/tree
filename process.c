@@ -120,7 +120,7 @@ process(char *name,
     }
 
     /* print the stat info (we use another line) */
-	print_stat_info(flags, &stbuf_node);
+    print_stat_info(flags, &stbuf_node);
 
     /* print our own prefix and name */
     printf("%s%s %s", buffer, pfx1, name);
