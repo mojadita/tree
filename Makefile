@@ -15,11 +15,20 @@ rootdatadir     ?= $(prefix)
 datadir         ?= $(rootdatadir)/share
 mandir          ?= $(rootdatadir)/man
 man1dir         ?= $(mandir)/man1
-own             ?= $(shell id -nu)
-grp             ?= $(shell id -ng)
+
+OS              != uname -o
+
+OWN-FreeBSD      = root
+GRP-FreeBSD      = wheel
+OWN-GNU/Linux    = bin
+GRP-GNU/Linux    = bin
+
+own             ?= $(OWN-$(OS))
+grp             ?= $(GRP-$(OS))
 xmod            ?= 755
 fmod            ?= 644
 dmod            ?= 755
+
 manpg            = tree.1.gz
 toclean         += $(manpg)
 
@@ -41,8 +50,12 @@ clean:
 	$(RM) $(toclean)
 depend:
 	mkdep $(all_srcs)
-install: $(targets) $(manpg) $(bindir) $(man1dir)
-	-$(INSTALL) -o $(own) -g $(grp) -m $(xmod) tree $(bindir)/tree
+
+install: $(bindir)/tree $(man1dir)/$(manpg)
+
+$(bindir)/tree: tree $(bindir)
+	-$(INSTALL) -o $(own) -g $(grp) -m $(xmod) tree $@
+$(man1dir)/$(manpg): $(manpg) $(man1dir)
 	-$(INSTALL) -o $(own) -g $(grp) -m $(fmod) $(manpg) $(man1dir)/$(manpg)
 
 $(bindir) $(man1dir):
