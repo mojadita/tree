@@ -11,8 +11,8 @@ all_srcs         =
 prefix          ?= /usr/local
 exec_prefix     ?= $(prefix)
 bindir          ?= $(prefix)/bin
-rootdatadir     ?= $(prefix)
-datadir         ?= $(rootdatadir)/share
+rootdatadir     ?= $(prefix)/share
+datadir         ?= $(rootdatadir)
 mandir          ?= $(rootdatadir)/man
 man1dir         ?= $(mandir)/man1
 
